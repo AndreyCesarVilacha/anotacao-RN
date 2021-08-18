@@ -6,7 +6,17 @@ export default function App() {
 
   //=======================Hooks=========================
   const [estado,setEstado] = useState('leitura');
-  const [anotacao, setAnotacao] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet dictum sit amet justo donec. Fames ac turpis egestas sed tempus. Fermentum iaculis eu non diam phasellus. Odio aenean sed adipiscing diam. Feugiat in fermentum posuere urna nec tincidunt praesent. Commodo nulla facilisi nullam vehicula. Ullamcorper eget nulla facilisi etiam. Lacus vel facilisis volutpat est. Est lorem ipsum dolor sit amet consectetur adipiscing. Suspendisse potenti nullam ac tortor vitae. Sed risus pretium quam vulputate dignissim suspendisse in. Tellus mauris a diam maecenas sed enim ut sem viverra. Ipsum consequat nisl vel pretium lectus quam id. Nunc sed id semper risus. Non curabitur gravida arcu ac tortor. Fermentum dui faucibus in ornare quam viverra.');
+  const [anotacao, setAnotacao] = useState('Clique no botão \' + \' para adicionar uma anotação!');
+
+  //=======================Funções=========================
+  function atualizarTexto(){
+    if(estado == 'leitura'){
+      setEstado('atualizando')
+    } else{
+      setEstado('leitura');
+      alert("Anotação salva");
+    }
+  }
 
   //Estado da tela para visualizar as anotações
   if(estado == 'leitura'){
@@ -23,11 +33,20 @@ export default function App() {
           <Text style={styles.anotacao}>{anotacao}</Text>
         </View>
 
-        <TouchableOpacity 
-          style={styles.btnAnotacao}
-          onPress={() => setEstado('atualizando')}>
-          <Text style={styles.btnAnotacaoIcon}>+</Text>
-        </TouchableOpacity>
+        {
+          (anotacao === 'Nenhuma anotação ainda!')?
+          <TouchableOpacity 
+            style={styles.btnAnotacao}
+            onPress={() => setEstado('atualizando')}>
+            <Text style={styles.btnAnotacaoIcon}>+</Text>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity 
+            onPress={() => atualizarTexto()}
+            style={styles.btnSalvar}>
+            <Text style={styles.btnSalvarIcon}>Editar</Text>
+          </TouchableOpacity>
+        } 
 
       </View>
     );
@@ -45,11 +64,11 @@ export default function App() {
         <TextInput 
           onChangeText={(text)=>setAnotacao(text)} 
           multiline={true} numberOfLines={5} 
-          value={anotacao} 
+          value={anotacao}
           style={styles.textIpnutStyle}/>
 
         <TouchableOpacity 
-          onPress={() => setEstado('leitura')}
+          onPress={() => atualizarTexto()}
           style={styles.btnSalvar}>
           <Text style={styles.btnSalvarIcon}>Salvar</Text>
         </TouchableOpacity>
@@ -76,7 +95,7 @@ const styles = StyleSheet.create({
     padding:20
   },
   anotacao:{
-    fontSize:13,
+    fontSize:14,
   },
   btnAnotacao:{
     position: 'absolute',
@@ -91,7 +110,7 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'relative',
     textAlign: 'center',
-    top: '10%',
+    top: '5%',
     fontSize: 30,
   },
   btnSalvar: {
