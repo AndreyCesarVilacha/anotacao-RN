@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 
 export default function App() {
 
@@ -8,6 +8,7 @@ export default function App() {
   const [estado,setEstado] = useState('leitura');
   const [anotacao, setAnotacao] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet dictum sit amet justo donec. Fames ac turpis egestas sed tempus. Fermentum iaculis eu non diam phasellus. Odio aenean sed adipiscing diam. Feugiat in fermentum posuere urna nec tincidunt praesent. Commodo nulla facilisi nullam vehicula. Ullamcorper eget nulla facilisi etiam. Lacus vel facilisis volutpat est. Est lorem ipsum dolor sit amet consectetur adipiscing. Suspendisse potenti nullam ac tortor vitae. Sed risus pretium quam vulputate dignissim suspendisse in. Tellus mauris a diam maecenas sed enim ut sem viverra. Ipsum consequat nisl vel pretium lectus quam id. Nunc sed id semper risus. Non curabitur gravida arcu ac tortor. Fermentum dui faucibus in ornare quam viverra.');
 
+  //Estado da tela para visualizar as anotações
   if(estado == 'leitura'){
     return (
       <View style={{flex:1}}>
@@ -30,6 +31,7 @@ export default function App() {
 
       </View>
     );
+    //Estado para atualizar as anotações
   } else if(estado == 'atualizando'){
     return(
     <View style={{flex:1}}>
@@ -39,6 +41,12 @@ export default function App() {
         <View style={styles.header}>
           <Text style={styles.headerText}>Aplicativo Anotação</Text>
         </View>
+
+        <TextInput 
+          onChangeText={(text)=>setAnotacao(text)} 
+          multiline={true} numberOfLines={5} 
+          value={anotacao} 
+          style={styles.textIpnutStyle}/>
 
         <TouchableOpacity 
           onPress={() => setEstado('leitura')}
@@ -101,5 +109,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     top: '20%',
     fontSize: 20,
-  }
+  },
+  textIpnutStyle:{
+    textAlignVertical:'top', 
+    height: 300, 
+    padding:20,
+  },
 });
