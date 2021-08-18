@@ -1,19 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import React, {useState,useEffect} from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, AsyncStorageStatic } from 'react-native';
 
 export default function App() {
 
   //=======================Hooks=========================
   const [estado,setEstado] = useState('leitura');
   const [anotacao, setAnotacao] = useState('Clique no botão \' + \' para adicionar uma anotação!');
+  useEffect(() =>{
+    //Quando inicializar o app queremos que leia a key anotacao
+    (async () =>{
+      try{
+        const anotacaoLeitura = await AsyncStorageStatic.getItem('anotacao');
+        setAnotacao(anotacaoLeitura);
+      }catch(error){}
+    })
+  })
 
   //=======================Funções=========================
+  //Função responsanvel por torna os dados em persistentes
+  let setData = async() => {
+    try{
+      await AsyncStorageStatic.setItem('anotacao', anotacao)
+    } catch(error){
+
+    }
+  }
+
   function atualizarTexto(){
     if(estado == 'leitura'){
-      setEstado('atualizando')
+      setEstado('atualizando');
     } else{
       setEstado('leitura');
+      setData();
       alert("Anotação salva");
     }
   }
@@ -62,6 +81,7 @@ export default function App() {
         </View>
 
         <TextInput 
+          autoFocus={true}
           onChangeText={(text)=>setAnotacao(text)} 
           multiline={true} numberOfLines={5} 
           value={anotacao}
